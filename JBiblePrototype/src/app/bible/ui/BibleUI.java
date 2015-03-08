@@ -5,15 +5,11 @@
  */
 package app.bible.ui;
 
-import controllers.ChapterController;
-import controllers.VerseController;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import models.BookModel;
-import models.ChapterModel;
-import models.VerseModel;
+import app.bible.test.controller.JBookController;
+import app.bible.test.controller.JChapterController;
+import app.bible.test.model.JBookModel;
+import app.bible.test.model.JChapterModel;
+import javax.swing.JList;
 
 /**
  *
@@ -23,23 +19,25 @@ import models.VerseModel;
 /*implement Observer so that the JTextArea can be updated when the Model changees
  using the observer pattern
  */
-public class BibleUI extends javax.swing.JPanel implements Observer {
+public class BibleUI extends javax.swing.JPanel {
+
+    private JBookController bookController;
+    private JBookModel bookModel;
+    private JChapterController chapterController;
+    private JChapterModel chapterModel;
 
     /**
      * Creates new form BibleUI
      */
     public BibleUI() {
-        /*
-         instantiate variables of the model and Controller in the correct order
-         that wont give a null pointer exception
-         */
 
-        model = new ChapterModel(new BookModel(1, "old"), 1);
-        vmodel = new VerseModel(1, jTextArea1, model);
-        vmodel.addObserver(this);
+        bookModel = new JBookModel();
+        chapterModel = new JChapterModel();
         initComponents();
-        control = new ChapterController(books1.getList(), chapters1.getModel());
-        vcontrol = new VerseController(chapters1.getList(), vmodel);
+        bookController = new JBookController(bookModel, chapterModel, list_old_testament);
+        bookController.setBookList();
+        chapterController = new JChapterController(chapterModel);
+        bookController.addBookOnClick();
 
     }
 
@@ -52,83 +50,102 @@ public class BibleUI extends javax.swing.JPanel implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        books1 = new app.bible.ui.Books();
-        chapters1 = new app.bible.ui.Chapters(model);
+        panel_books_verse = new javax.swing.JPanel();
+        books_tab = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        list_old_testament = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        list_new_testament = new javax.swing.JList();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        list_chapter = new javax.swing.JList();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        verse_messages = new javax.swing.JTextArea();
 
-        setBackground(new java.awt.Color(153, 153, 0));
+        panel_books_verse.setBackground(new java.awt.Color(204, 255, 255));
 
-        chapters1.setBackground(new java.awt.Color(204, 204, 255));
+        list_old_testament.setModel(bookModel);
+        jScrollPane1.setViewportView(list_old_testament);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        books_tab.addTab("Old Testament", jScrollPane1);
 
-        jButton1.setText("Settings");
+        list_new_testament.setModel(bookModel);
+        jScrollPane2.setViewportView(list_new_testament);
 
-        jButton2.setText("Speaker");
+        books_tab.addTab("New Testament", jScrollPane2);
+
+        list_chapter.setModel(chapterModel);
+        jScrollPane4.setViewportView(list_chapter);
+
+        javax.swing.GroupLayout panel_books_verseLayout = new javax.swing.GroupLayout(panel_books_verse);
+        panel_books_verse.setLayout(panel_books_verseLayout);
+        panel_books_verseLayout.setHorizontalGroup(
+            panel_books_verseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_books_verseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(books_tab, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panel_books_verseLayout.setVerticalGroup(
+            panel_books_verseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_books_verseLayout.createSequentialGroup()
+                .addGroup(panel_books_verseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_books_verseLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(books_tab))
+                    .addGroup(panel_books_verseLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        books_tab.getAccessibleContext().setAccessibleName("Old Testament\n");
+
+        verse_messages.setColumns(20);
+        verse_messages.setRows(5);
+        jScrollPane3.setViewportView(verse_messages);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(books1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(chapters1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addContainerGap())))
+                .addContainerGap()
+                .addComponent(panel_books_verse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(books1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(chapters1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panel_books_verse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public JList getList_new_testament() {
+        return list_new_testament;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private app.bible.ui.Books books1;
-    private app.bible.ui.Chapters chapters1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTabbedPane books_tab;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JList list_chapter;
+    private javax.swing.JList list_new_testament;
+    private javax.swing.JList list_old_testament;
+    private javax.swing.JPanel panel_books_verse;
+    private javax.swing.JTextArea verse_messages;
     // End of variables declaration//GEN-END:variables
    //create extra variables
-    private ChapterModel model;
-    private ChapterController control;
-    private VerseModel vmodel;
-    private VerseController vcontrol;
 
-    /*override method update of interface Observer in other to update
-     the JTextArea with the updated model when notified by the model
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        List list=vmodel.getVerses();
-        Iterator itr= list.iterator();
-        
-        while(itr.hasNext()){
-            jTextArea1.append(itr.next().toString());
-            jTextArea1.append("\n");
-        }
-    }
 }
