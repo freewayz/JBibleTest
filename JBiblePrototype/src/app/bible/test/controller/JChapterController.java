@@ -6,9 +6,11 @@
 package app.bible.test.controller;
 
 import app.bible.test.model.JChapterModel;
+import app.bible.test.model.JVerseModel;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JList;
-import javax.swing.event.ListSelectionEvent;
 
 /**
  *
@@ -18,14 +20,16 @@ public class JChapterController {
 
     private JBookController bookController;
     private JChapterModel chapterModel;
+    private JVerseModel verseModel;
 
-    public JChapterController(JChapterModel chapterModel) {
+    public JChapterController(JBookController bookController, JChapterModel chapterModel, JVerseModel verseModel) {
         this.chapterModel = chapterModel;
         this.bookController = bookController;
+        this.verseModel = verseModel;
         intializeChapter();
     }
 
-    public void intializeChapter() {
+    private void intializeChapter() {
         ArrayList<String> chapters = new ArrayList<>();
         if (chapters.isEmpty()) {
             for (int i = 1; i <= 50; i++) {
@@ -35,9 +39,30 @@ public class JChapterController {
         }
 
     }
+    
+    public void setOnchapterClicked(){
+            openBibleFileForReading(bookController.getBookModel().getBookName());
+    }
 
     public JChapterModel getChapterModel() {
         return chapterModel;
     }
 
+    public void openBibleFileForReading(String book_) {
+        StringBuffer bibleVerseContent = new StringBuffer();
+        String book_name_to_open = "C:\\Users\\root\\Documents\\BibleProject\\"
+                + "Jbible-master\\JBiblePrototype\\src\\resources\\books\\" + book_ +".txt";
+        try (BufferedReader reader = new BufferedReader(
+                new FileReader(book_name_to_open))) {
+            String line_content;
+            while((line_content = reader.readLine()) != null){
+                bibleVerseContent.append(line_content).append("\n\n");
+            }
+        }catch(IOException fileErr){
+            fileErr.printStackTrace();
+        }
+//        System.out.println(bibleVerseContent);
+        
+        verseModel.setVerseBuffer(bibleVerseContent);
+    }
 }

@@ -110,6 +110,7 @@ public class JBookController {
                         chapters.add("Chapter " + i);
                     }
                     chapterModel.setChapters(chapters);
+                    
                 }
         );
         bookList.revalidate();
@@ -123,4 +124,9 @@ public class JBookController {
         return bookModel;
     }
 
+    public JChapterModel getChapterModel() {
+        return chapterModel;
+    }
+
+    
 }

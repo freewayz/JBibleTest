@@ -7,8 +7,11 @@ package app.bible.ui;
 
 import app.bible.test.controller.JBookController;
 import app.bible.test.controller.JChapterController;
+import app.bible.test.controller.JVerseController;
 import app.bible.test.model.JBookModel;
 import app.bible.test.model.JChapterModel;
+import app.bible.test.model.JVerseModel;
+import java.util.Observer;
 import javax.swing.JList;
 
 /**
@@ -25,6 +28,8 @@ public class BibleUI extends javax.swing.JPanel {
     private JBookModel bookModel;
     private JChapterController chapterController;
     private JChapterModel chapterModel;
+    private JVerseModel verseModel;
+    private JVerseController verseController;
 
     /**
      * Creates new form BibleUI
@@ -33,11 +38,16 @@ public class BibleUI extends javax.swing.JPanel {
 
         bookModel = new JBookModel();
         chapterModel = new JChapterModel();
+        verseModel = new JVerseModel();
         initComponents();
+
         bookController = new JBookController(bookModel, chapterModel, list_old_testament);
-        bookController.setBookList();
-        chapterController = new JChapterController(chapterModel);
+        chapterController = new JChapterController(bookController, chapterModel, verseModel);
+//        verseController = new JVerseController(chapterController, verseModel, verse_messages);
         bookController.addBookOnClick();
+        bookController.setBookList();
+//        verseModel.addObserver(this);
+//        verseController.initializeVerse();
 
     }
 
@@ -74,6 +84,11 @@ public class BibleUI extends javax.swing.JPanel {
         books_tab.addTab("New Testament", jScrollPane2);
 
         list_chapter.setModel(chapterModel);
+        list_chapter.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                list_chapterValueChanged(evt);
+            }
+        });
         jScrollPane4.setViewportView(list_chapter);
 
         javax.swing.GroupLayout panel_books_verseLayout = new javax.swing.GroupLayout(panel_books_verse);
@@ -102,7 +117,9 @@ public class BibleUI extends javax.swing.JPanel {
 
         books_tab.getAccessibleContext().setAccessibleName("Old Testament\n");
 
+        verse_messages.setEditable(false);
         verse_messages.setColumns(20);
+        verse_messages.setLineWrap(true);
         verse_messages.setRows(5);
         jScrollPane3.setViewportView(verse_messages);
 
@@ -115,25 +132,33 @@ public class BibleUI extends javax.swing.JPanel {
                 .addComponent(panel_books_verse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panel_books_verse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void list_chapterValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_list_chapterValueChanged
+        // TODO add your handling code here:
+        chapterController.setOnchapterClicked();
+        verse_messages.setText(verseModel.getVerseBuffer().toString());
+
+    }//GEN-LAST:event_list_chapterValueChanged
 
     public JList getList_new_testament() {
         return list_new_testament;
     }
 
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane books_tab;
     private javax.swing.JScrollPane jScrollPane1;

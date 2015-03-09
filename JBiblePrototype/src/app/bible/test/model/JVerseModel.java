@@ -11,7 +11,7 @@ import java.util.Observable;
  *
  * @author root
  */
-public class JVerseModel extends Observable{
+public class JVerseModel{
     
     private StringBuffer verseBuffer;
 
@@ -26,7 +26,7 @@ public class JVerseModel extends Observable{
 
     public void setVerseBuffer(StringBuffer verseBuffer) {
         this.verseBuffer = verseBuffer;
-        notifyObservers();
+       
     }
     
     
