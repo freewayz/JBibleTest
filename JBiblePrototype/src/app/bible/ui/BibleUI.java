@@ -149,7 +149,9 @@ public class BibleUI extends javax.swing.JPanel {
 
     private void list_chapterValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_list_chapterValueChanged
         // TODO add your handling code here:
-        chapterController.setOnchapterClicked();
+        String s = (String)list_chapter.getSelectedValue();
+        int index =  Integer.parseInt(s.split("\\s")[1]);
+        chapterController.setOnchapterClicked(index);
         verse_messages.setText(verseModel.getVerseBuffer().toString());
 
     }//GEN-LAST:event_list_chapterValueChanged

@@ -99,7 +99,7 @@ public class JBookController {
     }
 
     public void addBookOnClick() {
-        chapters = chapterModel.getChapters();
+        chapters = chapterModel.getChapters();  
         bookList.addListSelectionListener(
                 (ListSelectionEvent event) -> {
                     chapters.clear();
@@ -110,7 +110,6 @@ public class JBookController {
                         chapters.add("Chapter " + i);
                     }
                     chapterModel.setChapters(chapters);
-                    
                 }
         );
         bookList.revalidate();
