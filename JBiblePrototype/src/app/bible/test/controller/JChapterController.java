@@ -53,10 +53,10 @@ public class JChapterController {
 
     public void openBibleFileForReading(String book_, int index) {
         StringBuffer bibleVerseContent = new StringBuffer();
-        String book_name_to_open = "C:\\Users\\root\\Documents\\BibleProject\\"
-                + "Jbible-master\\JBiblePrototype\\src\\res\\books\\" + book_ + ".txt";
+        String book_name_to_open = "C:\\Users\\root\\Documents\\NetBeansProjects\\JBible\\JBiblePrototype"
+                + "\\src\\res\\books\\"+book_+ ".txt";
         
-//       String b = this.getClass().getResource("")
+//       String book_name_to_open = this.getClass().getResource(book_ + ".txt").toString();
         Pattern p = Pattern.compile("(\\|+\\d+\\|)");
         Matcher m;
         String sVal = "";
